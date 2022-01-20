@@ -13,6 +13,7 @@
 - マルチプロセス、並列処理による高速な学習
 - tensorboardによる学習状況閲覧
 
+![tensorboard](images/tensorboard.png)
 
 # Clone
 
