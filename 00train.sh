@@ -55,8 +55,4 @@ python test.py --model result/$DATE.pt
 
 cp result/$DATE.pt result/result.pt
 
-# proc optuna-mnist_cnn 100
-# python train.py
-# echo "Fin: 00train.sh"
-
 # end
