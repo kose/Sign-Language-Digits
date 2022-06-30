@@ -1,63 +1,62 @@
 #!/bin/sh
 
-echo "larn: begin Sign-Language-Digits:`date`"
+export PATH=$HOME/miniforge3/bin:$PATH
+export LANG=C
 
-#
 cd `dirname $0`
 CDIR=`pwd`
 
-export LANG=C
+mkdir -p result
 
-##
-do_command()
+if test "$1" = "--clean"; then
+    echo "rm result/optuna.db"
+    rm result/optuna.db
+fi
+
+if test ! -s parameters.py; then
+
+    cat <<EOF > parameters.py
+dropout = 0.2565810500965313
+dim1=30
+dim2=30
+dim3=30
+dim4=30
+dim5=30
+EOF
+
+fi
+
+
+proc()
 {
-    echo "\033[32m$1\033[m"
-    $1
-}
+    SCRIPT=$1
+    N=$2
+    LOG=result/result_$SCRIPT.txt
 
-##
-## learn  func
-##
-
-learn()
-{
-    PREFIX=$1
-    DIM1=$2
-    DIM2=$3
-    DIM3=$4
-    EPOCH=$5
+    cp -p result/optuna.db result/optuna_0.db
     
-    LOG="$PREFIX""$DIM1"_"$DIM2"_"$DIM3"-`date +%Y%m%d_%H%M%S`
+    /bin/echo -n "# $SCRIPT: `date` -> " >> $LOG
+    python $SCRIPT.py --trial $N
 
-    if test -f result/$LOG.pt; then
-	echo "exist result/$LOG.pt"
-    else
+    echo "`date +%H:%M:%S`" >> $LOG
+    python $SCRIPT.py --trial 0 >> $LOG
 
-	#
-	# sh db/00make_dataset.sh
-	# cp db/train.tsv db/"$LOG"_train.tsv
-	# cp db/test.tsv db/"$LOG"_test.tsv
+    echo "" >> $LOG
 
-	SEED=`date +%H`
-	
-	do_command "time python train.py --dim1=$DIM1 --dim2=$DIM2 --dim3=$DIM3 --log $LOG --num-processes 6 --epoch $EPOCH --seed $SEED"
-	do_command "python test.py --model result/$LOG.pt --csv result/$LOG.csv"
-    fi
+    python $SCRIPT.py --trial 0 > /tmp/parameters.py
+    mv /tmp/parameters.py .
 }
 
-##
-## learn
-##
+proc optuna-hand_sign 30
 
-PREFIX="dim-"
+DATE=`date +%Y-%m%d%M`
+python train.py --log $DATE
+python test.py --model result/$DATE.pt
 
+cp result/$DATE.pt result/result.pt
 
-learn "$PREFIX" 32 64 64 50
-learn "$PREFIX" 64 128 128 50
-learn "$PREFIX" 128 256 256 50
-
-echo "larn: end Sign-Language-Digits:`date`"
-
-exit 0
+# proc optuna-mnist_cnn 100
+# python train.py
+# echo "Fin: 00train.sh"
 
 # end

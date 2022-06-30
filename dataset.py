@@ -117,9 +117,6 @@ if __name__ == '__main__':
 
     visualize(sy, sx, dataset)
 
-    import pdb; pdb.set_trace()
-        
-
 
 # import pdb; pdb.set_trace()
 

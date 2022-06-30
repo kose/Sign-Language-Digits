@@ -23,7 +23,7 @@ def train(rank, args, model, device, kwargs, dataset_larning, dataset_accuracy_t
     # optimizer = optim.SGD(model.parameters(), lr=args.lr, momentum=args.momentum)
     optimizer = torch.optim.Adam(model.parameters(), lr=args.lr)
 
-    for epoch in range(1, args.epochs + 1):
+    for epoch in range(1, args.epoch + 1):
         train_epoch(rank, epoch, args, model, device, train_loader, optimizer, writer)
 
         #
@@ -94,13 +94,16 @@ def train_epoch(rank, epoch, args, model, device, data_loader, optimizer, writer
             writer.add_scalar("training/loss", loss.item(), 
                               epoch + batch_idx * len(data) / len(data_loader.dataset))
 
+
         #
         # tty log
         #
         if batch_idx % args.log_interval == 0:
+                
             print('{}\tTrain Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}'.format(
                 pid, epoch, batch_idx * len(data), len(data_loader.dataset),
                 100. * batch_idx / len(data_loader), loss.item()))
+
             if args.dry_run:
                 break
 

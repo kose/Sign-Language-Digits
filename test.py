@@ -18,20 +18,20 @@ def test(args, model, device):
     dataset = MyDataset(csvfile="test.csv",  flip=Flip.both, transform=False, repeat=1)
     testloader = torch.utils.data.DataLoader(dataset, batch_size=10000, shuffle=False)
     
-    data, labels_ground_truth = testloader.__iter__().next()
+    data, labels_truth = testloader.__iter__().next()
     
-    labels_ground_truth = labels_ground_truth.numpy().copy()
+    labels_truth = labels_truth.numpy().copy()
 
     _pred = model(data).numpy().copy()
     labels_pred = np.argmax(_pred, axis=1)
 
-    result = confusion_matrix(labels_ground_truth, labels_pred)
+    result = confusion_matrix(labels_truth, labels_pred)
 
     print(result)
 
     ## accuracy
 
-    accuracy = sum(labels_ground_truth == labels_pred) / len(labels_ground_truth)
+    accuracy = sum(labels_truth == labels_pred) / len(labels_truth)
     print("accuracy:", accuracy)
     
     # print("end")
@@ -45,12 +45,6 @@ def main():
     parser = argparse.ArgumentParser(description='PyTorch MNIST Example')
     parser.add_argument('--model', type=str, default="result/result.pt")
     parser.add_argument('--csv', type=str, default="result/result.csv")
-    parser.add_argument('--dim1', type=int, default=32, 
-                        help='Neuralnetwork dimension 1 (default: 32)')
-    parser.add_argument('--dim2', type=int, default=64, 
-                        help='Neuralnetwork dimension 2 (default: 64)')
-    parser.add_argument('--dim3', type=int, default=64, 
-                        help='Neuralnetwork dimension 3 (default: 64)')
 
     args = parser.parse_args()
 
@@ -61,7 +55,7 @@ def main():
     
     device = torch.device("cpu")
 
-    model = Net(dim1=args.dim1, dim2=args.dim2, dim3=args.dim3)
+    model = Net()
 
     model.load_state_dict(torch.load(modelname))
 

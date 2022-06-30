@@ -9,6 +9,7 @@
 
 - PyTorch
 - torchvision.transform を使ったデータの水増し(Data Argumentation)
+- optunaを使ったハイパーパラメータの決定
 - CUDA環境下ではGPUを使用した学習
 - マルチプロセス、並列処理による高速な学習
 - tensorboardによる学習状況閲覧
@@ -42,6 +43,11 @@ python dataset.py
 
 ブラウザで [http://localhost:6006/](http://localhost:6006/) を開く
 
+# ハイパーパラメータの決定
+
+```
+python optuna-hand_sign.py
+```
 
 # 学習
 
@@ -54,7 +60,7 @@ python train.py
 # 評価
 
 ```
-> python test.py --model result/dim-32_64_64-20220120_130203.pt 
+> python test.py --model result/result.pt 
 [[ 76   0   0   0   0   0   0   0   0   0]
  [  0  78   0   0   0   0   0   0   0   0]
  [  0   0  90   0   0   0   0   0   0   0]
