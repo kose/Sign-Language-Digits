@@ -73,6 +73,8 @@ def get_data_loader():
 
     return train_loader, valid_loader
 
+global train_loader, valid_loader
+train_loader, valid_loader = get_data_loader()
 
 def objective(trial):
 
@@ -85,7 +87,8 @@ def objective(trial):
     optimizer = torch.optim.Adam(model.parameters(), lr=lr)
 
     # Get the FashionMNIST dataset.
-    train_loader, valid_loader = get_data_loader()
+    # train_loader, valid_loader = get_data_loader()
+    global train_loader, valid_loader
 
     # Training of the model.
     for epoch in range(EPOCHS):

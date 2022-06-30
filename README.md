@@ -76,4 +76,11 @@ accuracy: 0.9817961165048543
 
 # reference
 
-- コードは https://github.com/pytorch/examples/tree/master/mnist_hogwild をベースにしている。
+- optuna
+  - https://github.com/kose/PyTorch_MNIST_Optuna
+
+プログラムは以下をベースにしている。
+
+- https://github.com/pytorch/examples/tree/master/mnist_hogwild
+- https://github.com/optuna/optuna-examples/blob/main/pytorch/pytorch_simple.py
+
