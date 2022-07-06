@@ -14,8 +14,8 @@ from mainloop import train
 parser = argparse.ArgumentParser(description='Facial Expression Classification')
 parser.add_argument('--batch-size', type=int, default=100, metavar='N',
                     help='input batch size for training (default: 100)')
-parser.add_argument('--epoch', type=int, default=20, metavar='N',
-                    help='number of epoch to train (default: 20)')
+parser.add_argument('--epoch', type=int, default=10, metavar='N',
+                    help='number of epoch to train (default: 10)')
 parser.add_argument('--lr', type=float, default=0.01, metavar='LR',
                     help='learning rate (default: 0.01)')
 parser.add_argument('--momentum', type=float, default=0.5, metavar='M',
@@ -40,7 +40,7 @@ def main():
     device = torch.device("cuda" if use_cuda else "cpu")
 
     #
-    dataset_larning =        MyDataset(csvfile="train.csv", flip=Flip.both, transform=True, repeat=4)
+    dataset_larning =        MyDataset(csvfile="train.csv", flip=Flip.both, transform=True, repeat=6)
     dataset_accuracy_train = MyDataset(csvfile="train.csv", flip=Flip.none, transform=False, repeat=1)
     dataset_accuracy_test  = MyDataset(csvfile="test.csv",  flip=Flip.both, transform=False, repeat=1)
 

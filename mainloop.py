@@ -1,4 +1,4 @@
-import os
+import os, sys
 import torch
 from torchvision import transforms
 import numpy as np
@@ -73,6 +73,11 @@ def train(rank, args, model, device, kwargs, dataset_larning, dataset_accuracy_t
                 writer.add_scalar("testing/accuracy", accuracy, epoch)
 
                 print("testing/accuracy", accuracy)
+
+                if accuracy < 0.1:
+                    raise Exception("学習が進んでいません")
+                    os.exit(-1)
+                    # sys.exit(-1)
 
 
 def train_epoch(rank, epoch, args, model, device, data_loader, optimizer, writer):

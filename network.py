@@ -20,11 +20,11 @@ class Net(nn.Module):
         self.ln1 = nn.Linear(4 * 4 * dim4, dim5)
         self.ln2 = nn.Linear(dim5, 10)
 
-        # # initial wait, bias
-        # for net in [self.conv1, self.conv2, self.conv3, self.conv4, self.ln1, self.ln2]:
-        #     # nn.init.xavier_normal_(net.weight, gain=1.0) #Xavier(正規分布)
-        #     nn.init.kaiming_normal_(net.weight) # He(正規分布)
-        #     nn.init.uniform_(net.bias, 0.0, 1.0) # 一様分布
+        # initial wait, bias
+        for net in [self.conv1, self.conv2, self.conv3, self.conv4, self.ln1, self.ln2]:
+            nn.init.xavier_normal_(net.weight, gain=1.0) #Xavier(正規分布)
+            # nn.init.kaiming_normal_(net.weight) # He(正規分布)
+            nn.init.uniform_(net.bias, 0.0, 0.2) # 一様分布
 
 
     def forward(self, x):

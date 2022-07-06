@@ -46,11 +46,11 @@ N_VALID_EXAMPLES = BATCHSIZE * 30
 def define_model(trial):
 
     # network dim
-    dim1 = trial.suggest_int('dim1', 10, 50)
-    dim2 = trial.suggest_int('dim2', 10, 50)
-    dim3 = trial.suggest_int('dim3', 10, 50)
-    dim4 = trial.suggest_int('dim4', 10, 100)
-    dim5 = trial.suggest_int('dim5', 10, 100)
+    dim1 = trial.suggest_int('dim1', 15, 70)
+    dim2 = trial.suggest_int('dim2', 15, 70)
+    dim3 = trial.suggest_int('dim3', 15, 70)
+    dim4 = trial.suggest_int('dim4', 15, 70)
+    dim5 = trial.suggest_int('dim5', 50, 100)
 
     # ドロップアウト
     dropout = trial.suggest_float("dropout", 0.2, 0.5)
@@ -82,8 +82,8 @@ def objective(trial):
     model = define_model(trial).to(DEVICE)
 
     # Generate the optimizers.
-    # lr = trial.suggest_float("lr", 1e-5, 1e-2, log=True)
-    lr = trial.suggest_float("lr", 0.0005, 0.005, log=False)
+    lr = trial.suggest_float("lr", 1e-4, 1e-2, log=True)
+    # lr = trial.suggest_float("lr", 0.0005, 0.005, log=False)
     optimizer = torch.optim.Adam(model.parameters(), lr=lr)
 
     # Get the FashionMNIST dataset.

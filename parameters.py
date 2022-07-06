@@ -1,14 +1,14 @@
 # Study statistics: 
-#   Number of finished trials:  30
-#   Number of pruned trials:  13
-#   Number of complete trials:  17
+#   Number of finished trials:  550
+#   Number of pruned trials:  321
+#   Number of complete trials:  229
 # Best trial:
-#   Value:  0.9029126213592233
+#   Value:  0.7354368932038835
 #   Params: 
-dim1 = 25
-dim2 = 50
-dim3 = 40
-dim4 = 31
-dim5 = 27
-dropout = 0.29178375389215666
-lr = 0.0005264069445215813
+dim1 = 15
+dim2 = 15
+dim3 = 25
+dim4 = 15
+dim5 = 70
+dropout = 0.4371651312638799
+lr = 0.00010058231890196777
