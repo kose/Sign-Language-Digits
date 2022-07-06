@@ -8,25 +8,62 @@ CDIR=`pwd`
 
 mkdir -p result
 
-if test "$1" = "--clean"; then
-    echo "rm result/optuna.db"
-    rm result/optuna.db
-fi
 
+##
+## analize options
+##
+while [ $# -gt 0 ]
+do
+    case $1 in
+	--clean)
+	    FLAGS_clean=true
+	    ;;
+	    # exit 0;;
+
+	-optuna | --optuna)
+	    FLAGS_optuna=true
+	    ;;
+
+	-test | --test)
+	    FLAGS_test=true
+	    ;;
+
+	-train | --train)
+	    FLAGS_train=true
+	    ;;
+
+	-*)
+	    echo "unknown: $1"
+	    exit -1
+	    ;;
+
+	*)
+	    echo "unknown: $1"
+	    exit -1
+	    ;;
+    esac
+    shift
+done
+
+##
+##
+##
 if test ! -s parameters.py; then
 
     cat <<EOF > parameters.py
-dropout = 0.2565810500965313
-dim1=30
-dim2=30
-dim3=30
-dim4=30
-dim5=30
+lr = 0.001
+dropout = 0.3
+dim1=20
+dim2=20
+dim3=20
+dim4=20
+dim5=50
 EOF
-
 fi
 
-
+##
+##
+##
 proc()
 {
     SCRIPT=$1
@@ -47,12 +84,33 @@ proc()
     mv /tmp/parameters.py .
 }
 
-proc optuna-hand_sign 30
+if test $FLAGS_clean; then
+    echo "rm result/optuna.db"
+    rm result/optuna.db
+    proc optuna-hand_sign 50
+    exit 0
+fi
 
-DATE=`date +%Y-%m%d%M`
-python train.py --log $DATE
-python test.py --model result/$DATE.pt
+if test $FLAGS_test; then
 
-cp result/$DATE.pt result/result.pt
+    DATE=`date +%Y-%m%d%H%M`
+    python train.py --log $DATE --epoch 20
+    cp result/$DATE.pt result/result.pt
+
+    # python test.py --model result/$DATE.pt
+    exit 0
+fi
+
+if test $FLAGS_optuna; then
+    optuna --storage sqlite:///result/optuna.db best-trials --study-name hand-sign
+    exit 0
+fi
+
+if test $FLAGS_train; then
+    proc optuna-hand_sign 50
+    exit 0
+fi
+
+echo "do nothing: Sign-Language-Digits/00train.sh"
 
 # end
